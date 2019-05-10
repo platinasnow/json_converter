@@ -1,0 +1,27 @@
+-- group_concat 길이제한 증가
+SET SESSION group_concat_max_len = 10000000;
+
+-- 2번째 타입 쿼리
+
+SELECT 
+sale_man_cd
+board_idx
+reg_date
+,GROUP_CONCAT(cust_seq) AS cust_seq
+,GROUP_CONCAT(hphone) AS hphone
+FROM (SELECT hphone, sale_man_cd, IFNULL(cust_seq, '') AS cust_seq, IFNULL(board_idx ,  '') AS board_idx, reg_date  FROM sms_send_log) t
+GROUP BY sale_man_cd
+LIMIT 1000000
+;
+
+-- 3번째 타입 쿼리
+
+SELECT 
+sale_man_cd
+,GROUP_CONCAT(board_idx) AS board_idx
+,GROUP_CONCAT(reg_date) AS reg_date
+,GROUP_CONCAT(cust_seq) AS cust_seq
+,GROUP_CONCAT(hphone) AS hphone
+FROM (SELECT hphone, sale_man_cd, IFNULL(cust_seq, '') AS cust_seq, IFNULL(board_idx ,  '') AS board_idx, reg_date  FROM sms_send_log) t
+GROUP BY sale_man_cd
+LIMIT 100000
